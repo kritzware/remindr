@@ -68,7 +68,15 @@ function sendMessage(recipientId, message) {
         method: 'POST',
         json: {
             recipient: {id: recipientId},
-            message: message,
+            message: {
+            	text: 'Welcome to Remindr!',
+            	attachment: {
+            		type: 'image',
+            		payload: {
+            			url: 'https://media.giphy.com/media/3ornk57KwDXf81rjWM/giphy.gif'
+            		}
+            	}
+            }
         }
     }, function(error, response, body) {
         if (error) {
