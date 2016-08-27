@@ -1,0 +1,23 @@
+{
+  "name": "remindr",
+  "version": "1.0.0",
+  "description": "Facebook Messenger Reminder Application",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kritzware/remindr.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kritzware/remindr/issues"
+  },
+  "homepage": "https://github.com/kritzware/remindr#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
