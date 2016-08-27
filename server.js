@@ -72,14 +72,14 @@ app.post('/webhook', function (req, res) {
 
         if (event.message && event.message.text) {
         	console.log(event.message)
-        	wit.getMessageVars('Get some milk at 3pm tomorrow').then((vars) => {
-        		console.log(vars)
+        	sendMessage(event.sender.id, {text: "Echo: " + event.message.text})
+        	// wit.getMessageVars(event.message).then((vars) => {
+        	// 	console.log(vars)
 
-        		var msg = vars.entities.reminder[0].value
-        		var time = moment(vars.entities.datetime[0].value).format('YYYY-MM-DD dddd HH:mm:ss')
-        		sendMessage(event.sender.id, {text: msg + ' : ' + time});
-        	})
-            
+        	// 	var msg = vars.entities.reminder[0].value
+        	// 	var time = moment(vars.entities.datetime[0].value).format('YYYY-MM-DD dddd HH:mm:ss')
+        	// 	sendMessage(event.sender.id, {text: msg + ' : ' + time});
+        	// })
         }
     }
     res.sendStatus(200);
@@ -92,9 +92,7 @@ function sendMessage(recipientId, message) {
         method: 'POST',
         json: {
             recipient: {id: recipientId},
-            message: {
-            	text: message
-            },
+            message: message,
             // message: {
             // 	attachment: {
             // 		type: 'image',
