@@ -40,17 +40,8 @@ const VALIDATION_TOKEN = 'remindr_bot_verify_token'
 const ACCESS_TOKEN = 'EAAZALiJbpJY0BAM1cVeTCKZAL4ETYpjH8HHHYhhQuhVmaCaZCM4A3ECPOnd1p40O0aPLfXLpdMx5W2JbOOcJg3ZBHcQWBbbwqwuh0vJKxJ0293drl3uyJCswAoL7kPLSKiVMkyjGTJjjQHmjmScZBXkH1DZAH4MdMCybxOqR9R2wZDZD'
 
 app.get('/', (req, res) => {
-        	// wit.getMessageVars('Get some milk at 3pm tomorrow').then((vars) => {
-
-        	// 	// vars = JSON.parse(vars) 
-        	// 	console.log(vars)
-
-        	// 	var msg = vars.entities.reminder[0].value
-        	// 	var time = vars.entities.datetime[0].value
-        	// 	console.log(msg)
-        	// 	console.log(moment(time).format('YYYY-MM-DD dddd HH:mm:ss'))
-        	// })
-	res.json({Hello: 'world!'})
+	res.sendFile(__dirname + '/public/index.html');
+	// res.json({Hello: 'world!'})
 })
 
 app.get('/webhook', (req, res) => {
