@@ -72,8 +72,17 @@ app.post('/webhook', function (req, res) {
 
         if (event.message && event.message.text) {
         	console.log(event.message)
-        	sendMessage(event.sender.id, {text: "Echo: " + event.message.text})
-        	// wit.getMessageVars(event.message).then((vars) => {
+        	// sendMessage(event.sender.id, {text: "Echo: " + event.message.
+		wit.getMessageVars(event.message.text).then((vars) => {
+			console.log('wit here')
+			var msg = vars.entities.reminder[0].value
+			var time = moment(vars.entities.datetime[0].value).format('YYYY-MM-DD dddd HH:mm:ss')
+			console.log(vars)
+			console.log(msg)
+			sendMessage(event.sender.id, {text: msg + ' : ' + time})
+		})
+
+		// wit.getMessageVars(event.message).then((vars) => {
         	// 	console.log(vars)
 
         	// 	var msg = vars.entities.reminder[0].value
@@ -86,6 +95,10 @@ app.post('/webhook', function (req, res) {
 });
 
 function sendMessage(recipientId, message) {
+	
+	console.log('sendMessage')
+	console.log(message)
+
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {access_token: ACCESS_TOKEN},
