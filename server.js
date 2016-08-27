@@ -4,6 +4,10 @@ var server = require('http').Server(app);
 var request = require('request')
 var crypto = require('crypto')
 var bodyParser = require('body-parser')
+var _ = require('lodash')
+var moment = require('moment')
+
+const wit = require('./remindr/parse.js')
 
 const APP_SECRET = 'bfa6d47456ca09d67d2a3eee0e18738a'
 
@@ -36,6 +40,16 @@ const VALIDATION_TOKEN = 'remindr_bot_verify_token'
 const ACCESS_TOKEN = 'EAAZALiJbpJY0BAM1cVeTCKZAL4ETYpjH8HHHYhhQuhVmaCaZCM4A3ECPOnd1p40O0aPLfXLpdMx5W2JbOOcJg3ZBHcQWBbbwqwuh0vJKxJ0293drl3uyJCswAoL7kPLSKiVMkyjGTJjjQHmjmScZBXkH1DZAH4MdMCybxOqR9R2wZDZD'
 
 app.get('/', (req, res) => {
+        	// wit.getMessageVars('Get some milk at 3pm tomorrow').then((vars) => {
+
+        	// 	// vars = JSON.parse(vars) 
+        	// 	console.log(vars)
+
+        	// 	var msg = vars.entities.reminder[0].value
+        	// 	var time = vars.entities.datetime[0].value
+        	// 	console.log(msg)
+        	// 	console.log(moment(time).format('YYYY-MM-DD dddd HH:mm:ss'))
+        	// })
 	res.json({Hello: 'world!'})
 })
 
@@ -53,9 +67,19 @@ app.post('/webhook', function (req, res) {
     var events = req.body.entry[0].messaging;
     for (i = 0; i < events.length; i++) {
         var event = events[i];
+
+        // if(_.includes(event.message, 'thanks') || _.includes(event.message, 'Thanks') ||)
+
         if (event.message && event.message.text) {
         	console.log(event.message)
-            sendMessage(event.sender.id, {text: "Echo: " + event.message.text});
+        	wit.getMessageVars('Get some milk at 3pm tomorrow').then((vars) => {
+        		console.log(vars)
+
+        		var msg = vars.entities.reminder[0].value
+        		var time = moment(vars.entities.datetime[0].value).format('YYYY-MM-DD dddd HH:mm:ss')
+        		sendMessage(event.sender.id, {text: msg + ' : ' + time});
+        	})
+            
         }
     }
     res.sendStatus(200);
@@ -69,13 +93,16 @@ function sendMessage(recipientId, message) {
         json: {
             recipient: {id: recipientId},
             message: {
-            	attachment: {
-            		type: 'image',
-            		payload: {
-            			url: 'https://media.giphy.com/media/3ornk57KwDXf81rjWM/giphy.gif'
-            		}
-            	}
-            }
+            	text: message
+            },
+            // message: {
+            // 	attachment: {
+            // 		type: 'image',
+            // 		payload: {
+            // 			url: 'https://media.giphy.com/media/3ornk57KwDXf81rjWM/giphy.gif'
+            // 		}
+            // 	}
+            // }
         }
     }, function(error, response, body) {
         if (error) {
