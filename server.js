@@ -69,7 +69,6 @@ function sendMessage(recipientId, message) {
         json: {
             recipient: {id: recipientId},
             message: {
-            	text: 'Welcome to Remindr!',
             	attachment: {
             		type: 'image',
             		payload: {
