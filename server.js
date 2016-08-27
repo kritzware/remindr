@@ -2,6 +2,34 @@ var express = require('express');
 var app = express();
 var server = require('http').Server(app);
 var request = require('request')
+var crypto = require('crypto')
+var bodyParser = require('body-parser')
+
+const APP_SECRET = 'bfa6d47456ca09d67d2a3eee0e18738a'
+
+app.use(bodyParser.json({ verify: verifyRequestSignature }));
+
+function verifyRequestSignature(req, res, buf) {
+  var signature = req.headers["x-hub-signature"];
+
+  if (!signature) {
+    // For testing, let's log an error. In production, you should throw an 
+    // error.
+    console.error("Couldn't validate the signature.");
+  } else {
+    var elements = signature.split('=');
+    var method = elements[0];
+    var signatureHash = elements[1];
+
+    var expectedHash = crypto.createHmac('sha1', APP_SECRET)
+                        .update(buf)
+                        .digest('hex');
+
+    if (signatureHash != expectedHash) {
+      throw new Error("Couldn't validate the request signature.");
+    }
+  }
+}
 
 const port = 3002
 const VALIDATION_TOKEN = 'remindr_bot_verify_token'
