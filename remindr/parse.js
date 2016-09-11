@@ -1,6 +1,8 @@
 const request = require('request');
 const Q = require('q');
-const TOKEN = '6XM3ZT75UFHFTN4MTMEYA3TO3PBC7HJI';
+var config = require('./config')
+
+const TOKEN = config.wit_token;
 
 module.exports = {
 
@@ -16,8 +18,8 @@ module.exports = {
 		var options = {
 			url: 'https://api.wit.ai/message',
 			method: 'GET',
-			headers: {
-				'Authorization': 'Bearer 6XM3ZT75UFHFTN4MTMEYA3TO3PBC7HJI',
+			headers: { 
+				'Authorization': 'Bearer ' + config.wit_token,
 				'Content-Type': 'application/json'
 			},
 			qs: {

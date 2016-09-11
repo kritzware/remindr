@@ -6,10 +6,11 @@ var crypto = require('crypto')
 var bodyParser = require('body-parser')
 var _ = require('lodash')
 var moment = require('moment')
+var config = require('config')
 
 const wit = require('./remindr/parse.js')
 
-const APP_SECRET = 'bfa6d47456ca09d67d2a3eee0e18738a'
+const APP_SECRET = config.fb_app_secret
 
 app.use(bodyParser.json({ verify: verifyRequestSignature }));
 
@@ -37,7 +38,7 @@ function verifyRequestSignature(req, res, buf) {
 
 const port = 3002
 const VALIDATION_TOKEN = 'remindr_bot_verify_token'
-const ACCESS_TOKEN = 'EAAZALiJbpJY0BAM1cVeTCKZAL4ETYpjH8HHHYhhQuhVmaCaZCM4A3ECPOnd1p40O0aPLfXLpdMx5W2JbOOcJg3ZBHcQWBbbwqwuh0vJKxJ0293drl3uyJCswAoL7kPLSKiVMkyjGTJjjQHmjmScZBXkH1DZAH4MdMCybxOqR9R2wZDZD'
+const ACCESS_TOKEN = config.fb_access_token
 
 app.get('/', (req, res) => {
 	// res.sendFile(__dirname + '/public/index.html');
